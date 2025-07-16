@@ -4,7 +4,6 @@
 
 // const imagekit = require("../../Utils/imageKit");
 
-
 // const fileUpload = async (file) => {
 //   const buffer = file.data;
 //   if (!buffer || !file.name) {
@@ -17,7 +16,6 @@
 //   });
 //   return uploadResponse.url;
 // };
-
 
 // const register = async (req, res) => {
 //   try {
@@ -53,8 +51,6 @@
 //     res.status(500).json({ success: false, message: "Server error" });
 //   }
 // };
-
-
 
 // const login = async (req, res) => {
 //   try {
@@ -92,14 +88,7 @@
 //   }
 // };
 
-
-
-
-
 // module.exports = {register,login};
-
-
-
 
 const userModel = require("../../Module/UserModule");
 const bcrypt = require("bcrypt");
@@ -158,12 +147,16 @@ const register = async (req, res) => {
     const { name, phone } = req.body;
 
     if (!name || !phone) {
-      return res.status(400).json({ success: false, message: "Name and phone are required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Name and phone are required" });
     }
 
     const existingUser = await userModel.findOne({ phone });
     if (existingUser) {
-      return res.status(409).json({ success: false, message: "User already exists" });
+      return res
+        .status(409)
+        .json({ success: false, message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(phone, 10); // Phone as password
@@ -171,7 +164,7 @@ const register = async (req, res) => {
     const newUser = new userModel({
       name,
       phone,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     await newUser.save();
@@ -179,8 +172,8 @@ const register = async (req, res) => {
     // ✅ Generate JWT Token
     const token = jwt.sign(
       { userId: newUser._id, phone: newUser.phone }, // payload
-      process.env.JWT_SECRET || "your_jwt_secret",   // secret
-      { expiresIn: "7d" }                             // token expiry
+      process.env.JWT_SECRET || "your_jwt_secret", // secret
+      { expiresIn: "7d" } // token expiry
     );
 
     res.status(201).json({
@@ -190,10 +183,9 @@ const register = async (req, res) => {
       user: {
         _id: newUser._id,
         name: newUser.name,
-        phone: newUser.phone
-      }
+        phone: newUser.phone,
+      },
     });
-
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({ success: false, message: "Server error" });
@@ -244,32 +236,38 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { name, phone } = req.body;
+    const { email, password } = req.body;
 
-    if (!name || !phone) {
-      return res.status(400).json({ success: false, message: "Name and phone are required" });
-    }
+    // if (!name || !phone) {
+    //   return res.status(400).json({ success: false, message: "Name and phone are required" });
+    // }
 
     // Find user by phone number
-    const user = await userModel.findOne({ phone });
+    const user = await userModel.findOne({ email });
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     // Match name
-    if (user.name !== name) {
-      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    if (user.email !== email) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials name" });
     }
 
     // Compare phone as password (hashed)
-    const isMatch = await bcrypt.compare(phone, user.password);
+    const isMatch = bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ success: false, message: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials passwored" });
     }
 
     // Create JWT token
     const token = jwt.sign(
-      { userId: user._id, name: user.name, phone: user.phone },
+      { userId: user._id },
       process.env.JWT_SECRET || "your_jwt_secret",
       { expiresIn: "7d" }
     );
@@ -278,71 +276,13 @@ const login = async (req, res) => {
       success: true,
       message: "Login successful",
       token,
-      user: {
-        name: user.name,
-        phone: user.phone
-      }
+      user,
     });
-
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
-
-
-
-// const registeruser = async (req, res) => {
-//   try {
-//     const { name, phone } = req.body;
-
-//     // Validate input
-//     if (!name || !phone) {
-//       return res.status(400).json({ success: false, message: "Name and phone are required" });
-//     }
-
-//     // Check if user already exists
-//     const existingUser = await userModel.findOne({ phone });
-//     if (existingUser) {
-//       return res.status(409).json({ success: false, message: "User already exists" });
-//     }
-
-//     // Hash phone number as password
-//     const hashedPassword = await bcrypt.hash(phone, 10);
-
-//     // Save user
-//     const newUser = new userModel({
-//       name,
-//       phone,
-//       password: hashedPassword
-//     });
-
-//     await newUser.save();
-
-//     // Generate JWT token
-//     const token = jwt.sign(
-//       { userId: newUser._id, name: newUser.name, phone: newUser.phone },
-//       process.env.JWT_SECRET || "your_jwt_secret",
-//       { expiresIn: "7d" }
-//     );
-
-//     res.status(201).json({
-//       success: true,
-//       message: "User registered successfully",
-//       token,
-//       user: {
-//         _id: newUser._id,
-//         name: newUser.name,
-//         phone: newUser.phone
-//       }
-//     });
-
-//   } catch (error) {
-//     console.error("Registration error:", error);
-//     res.status(500).json({ success: false, message: "Server error" });
-//   }
-// };
 
 const registeruser = async (req, res) => {
   try {
@@ -360,12 +300,16 @@ const registeruser = async (req, res) => {
     } = req.body;
 
     if (!name || !phone) {
-      return res.status(400).json({ success: false, message: "Name and phone are required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Name and phone are required" });
     }
 
     const existingUser = await userModel.findOne({ phone });
     if (existingUser) {
-      return res.status(409).json({ success: false, message: "User already exists" });
+      return res
+        .status(409)
+        .json({ success: false, message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(phone, 10); // phone as password
@@ -413,51 +357,54 @@ const loginOrRegister = async (req, res) => {
     const { name, phone } = req.body;
 
     if (!name || !phone) {
-      return res.status(400).json({ success: false, message: "Name and phone are required" });
+      return res.status(400).json({
+        success: false,
+        message: "Name and phone are required",
+      });
     }
 
     let user = await userModel.findOne({ phone });
 
     if (user) {
-      // ✅ User found → Login
-      const isMatch = await bcrypt.compare(phone, user.password); // Phone is password
-      if (!isMatch) {
-        return res.status(401).json({ success: false, message: "Invalid credentials" });
-      }
-    } else {
-      // ❌ User not found → Register
-      const hashedPassword = await bcrypt.hash(phone, 10);
-      user = new userModel({
-        name,
-        phone,
-        password: hashedPassword
+      // ✅ User found → Login: generate token
+      const token = jwt.sign(
+        { userId: user._id, name: user.name, phone: user.phone },
+        process.env.JWT_SECRET || "your_jwt_secret",
+        { expiresIn: "7d" }
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Login successful",
+        token,
+        user: {
+          _id: user._id,
+          name: user.name,
+          phone: user.phone,
+        },
+        users: user,
       });
-      await user.save();
+    } else {
+      // ❌ User not found → Create new, but don't login
+      const newUser = new userModel({ name, phone });
+      await newUser.save();
+
+      return res.status(201).json({
+        success: true,
+        message: "User registered successfully. Please login now.",
+        token,
+        user: user,
+      });
     }
-
-    // ✅ Generate JWT token (for both cases)
-    const token = jwt.sign(
-      { userId: user._id, name: user.name, phone: user.phone },
-      process.env.JWT_SECRET || "your_jwt_secret",
-      { expiresIn: "7d" }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: user.createdAt ? "User registered & logged in" : "Login successful",
-      token,
-      user: {
-        _id: user._id,
-        name: user.name,
-        phone: user.phone
-      }
-    });
-
   } catch (error) {
     console.error("Login/Register error:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
+
 // ! get all fetch user
 const getAllUsers = async (req, res) => {
   try {
@@ -473,5 +420,10 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-
-module.exports = { register, login,registeruser,loginOrRegister, getAllUsers };
+module.exports = {
+  register,
+  login,
+  registeruser,
+  loginOrRegister,
+  getAllUsers,
+};

@@ -24,10 +24,8 @@
 // //   const token = localStorage.getItem("token"); // ya sessionStorage
 // // const user = token ? JSON.parse(atob(token.split('.')[1])) : null;
 
-
 // //   // const  user = useSelector((state)=> state.auth)
 // //   // console.log(""us er);
-  
 
 // //   // Close dropdown when clicking outside
 // //   useEffect(() => {
@@ -43,7 +41,6 @@
 // //   localStorage.removeItem("token"); // token delete
 // //   window.location.reload();         // page reload for update
 // // };
-
 
 // //     document.addEventListener('mousedown', handleClickOutside);
 // //     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -283,7 +280,6 @@
 // //   </button>
 // // )}
 
-
 // //             </div>
 // //           </div>
 // //         </div>
@@ -292,8 +288,7 @@
 // //   );
 // // };
 
-// // export default Navbar;   
-
+// // export default Navbar;
 
 // import { useState, useRef, useEffect } from 'react';
 // import {
@@ -322,7 +317,7 @@
 //   const tokenEmployer = localStorage.getItem("tokenEmployer");
 //   const tokenUser = localStorage.getItem("tokenUser");
 //   const tokenAdmin = localStorage.getItem("tokenAdmin");
-// // 
+// //
 //   const isLoggedIn = tokenEmployer || tokenUser || tokenAdmin;
 
 //   const handleLogout = () => {
@@ -601,15 +596,22 @@
 
 // export default Navbar;
 
-
-
-import { useState } from 'react';
+import { useState } from "react";
 import {
-  FaHome, FaSearch, FaBuilding, FaUserTie, FaGraduationCap,
-  FaUpload, FaUser, FaChevronDown, FaChevronUp,
-  FaTimes, FaBars, FaSignOutAlt
-} from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+  FaHome,
+  FaSearch,
+  FaBuilding,
+  FaUserTie,
+  FaGraduationCap,
+  FaUpload,
+  FaUser,
+  FaChevronDown,
+  FaChevronUp,
+  FaTimes,
+  FaBars,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -619,47 +621,59 @@ const Navbar = () => {
   const tokenEmployer = localStorage.getItem("tokenEmployer");
   const tokenUser = localStorage.getItem("tokenUser");
   const tokenAdmin = localStorage.getItem("tokenAdmin");
-  const isLoggedIn = tokenEmployer || tokenUser || tokenAdmin;
+  const token = localStorage.getItem("token");
+  const isLoggedIn = tokenEmployer || tokenUser || tokenAdmin || token;
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/employeLogin");
+    navigate("/");
     window.location.reload();
   };
 
   const navItems = [
-    { name: 'Home', icon: <FaHome className="mr-2" />, href: '/' },
+    { name: "Home", icon: <FaHome className='mr-2' />, href: "/" },
     {
-      name: 'Find Jobs', icon: <FaSearch className="mr-2" />, dropdown: [
-        { name: 'All Jobs', href: '/all-job' },
-        { name: 'Remote Jobs', href: '/remote-jobs' },
-        { name: 'Government Jobs', href: '/government-jobs' },
-        { name: 'IT Jobs', href: '/it-jobs' },
-      ]
+      name: "Find Jobs",
+      icon: <FaSearch className='mr-2' />,
+      dropdown: [
+        { name: "All Jobs", href: "/all-job" },
+        { name: "Remote Jobs", href: "/remote-jobs" },
+        { name: "Government Jobs", href: "/government-jobs" },
+        { name: "IT Jobs", href: "/it-jobs" },
+      ],
     },
     {
-      name: 'Employers', icon: <FaBuilding className="mr-2" />, dropdown: [
-        { name: 'Post a Job', href: '/post-job' },
-        { name: 'Browse Candidates', href: '/candidates' },
-        { name: 'Employer Dashboard', href: '/employer-dash' },
-        { name: 'Login-Register', href: '/employerRegister' },
+      name: "Employers",
+      icon: <FaBuilding className='mr-2' />,
+      dropdown: [
+        { name: "Post a Job", href: "/post-job" },
+        { name: "Browse Candidates", href: "/candidates" },
+        { name: "Employer Dashboard", href: "/employer-dash" },
+        { name: "Login-Register", href: "/employerRegister" },
         // { name: 'Employer Dashboard', href: '' },
-
-      ]
+      ],
     },
     {
-      name: 'Candidates', icon: <FaUserTie className="mr-2" />, dropdown: [
-        { name: 'User Dashboard', href: '/user-dash' },
-        { name: 'Resume Builder', href: '/resume-builder' },
-      ]
+      name: "Candidates",
+      icon: <FaUserTie className='mr-2' />,
+      dropdown: [
+        { name: "User Dashboard", href: "/user-dash" },
+        { name: "Resume Builder", href: "/resume-builder" },
+      ],
     },
     {
-      name: 'Education', icon: <FaGraduationCap className="mr-2" />, dropdown: [
-        { name: 'Online Courses', href: '/courses' },
-        { name: 'Certifications', href: '/certifications' },
-      ]
+      name: "Education",
+      icon: <FaGraduationCap className='mr-2' />,
+      dropdown: [
+        { name: "Online Courses", href: "/courses" },
+        { name: "Certifications", href: "/certifications" },
+      ],
     },
-    { name: 'Contact', icon: <FaGraduationCap className="mr-2" />, href: '/contact' }
+    {
+      name: "Contact",
+      icon: <FaGraduationCap className='mr-2' />,
+      href: "/contact",
+    },
   ];
 
   const toggleDropdown = (name) => {
@@ -672,45 +686,48 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-lg py-3 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between md:h-14 h-10">
+    <nav className='bg-white shadow-lg py-3 sticky top-0 z-50'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='flex justify-between md:h-14 h-10'>
           {/* Logo */}
-          <Link to="/" className="text-xl font-bold text-[#009688] flex items-center">
+          <Link
+            to='/'
+            className='text-xl font-bold text-[#009688] flex items-center'
+          >
             SuperSite
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex md:items-center md:space-x-4">
+          <div className='hidden md:flex md:items-center md:space-x-4'>
             {navItems.map((item) => (
-              <div key={item.name} className="relative">
+              <div key={item.name} className='relative'>
                 {item.dropdown ? (
                   <>
                     <button
                       onClick={() => toggleDropdown(item.name)}
                       className={`flex items-center px-3 py-2 rounded-md text-sm font-medium ${
                         openDropdown === item.name
-                          ? 'text-[#009688] bg-blue-50'
-                          : 'text-gray-700 hover:text-[#009688] hover:bg-blue-50'
+                          ? "text-[#009688] bg-blue-50"
+                          : "text-gray-700 hover:text-[#009688] hover:bg-blue-50"
                       }`}
                     >
                       {item.icon}
                       {item.name}
                       {openDropdown === item.name ? (
-                        <FaChevronUp className="ml-1" size={12} />
+                        <FaChevronUp className='ml-1' size={12} />
                       ) : (
-                        <FaChevronDown className="ml-1" size={12} />
+                        <FaChevronDown className='ml-1' size={12} />
                       )}
                     </button>
 
                     {openDropdown === item.name && (
-                      <div className="absolute left-0 mt-1 w-56 rounded-md bg-white shadow-lg z-10">
+                      <div className='absolute left-0 mt-1 w-56 rounded-md bg-white shadow-lg z-10'>
                         {item.dropdown.map((subItem) => (
                           <Link
                             key={subItem.name}
                             to={subItem.href}
                             onClick={closeMenus}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#009688]"
+                            className='block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#009688]'
                           >
                             {subItem.name}
                           </Link>
@@ -721,7 +738,7 @@ const Navbar = () => {
                 ) : (
                   <Link
                     to={item.href}
-                    className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-[#009688] hover:bg-blue-50"
+                    className='flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-[#009688] hover:bg-blue-50'
                   >
                     {item.icon}
                     {item.name}
@@ -731,33 +748,33 @@ const Navbar = () => {
             ))}
 
             {/* Upload CV */}
-            <button className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#009688] hover:bg-blue-50 rounded-md">
-              <FaUpload className="mr-2" /> Upload CV
+            <button className='flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#009688] hover:bg-blue-50 rounded-md'>
+              <FaUpload className='mr-2' /> Upload CV
             </button>
 
             {/* Login / Logout */}
             {isLoggedIn ? (
               <button
                 onClick={handleLogout}
-                className="flex items-center px-3 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md"
+                className='flex items-center px-3 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md'
               >
-                <FaSignOutAlt className="mr-2" /> Logout
+                <FaSignOutAlt className='mr-2' /> Logout
               </button>
             ) : (
               <Link
-                to="/login"
-                className="flex items-center px-3 py-2 text-sm font-medium text-white bg-[#009688] hover:bg-[#00796b] rounded-md"
+                to='/login'
+                className='flex items-center px-3 py-2 text-sm font-medium text-white bg-[#009688] hover:bg-[#00796b] rounded-md'
               >
-                <FaUser className="mr-2" /> Login
+                <FaUser className='mr-2' /> Login
               </Link>
             )}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className='md:hidden flex items-center'>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+              className='p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100'
             >
               {mobileMenuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
             </button>
@@ -767,16 +784,16 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t px-4 py-2 space-y-2">
+        <div className='md:hidden bg-white border-t px-4 py-2 space-y-2'>
           {navItems.map((item) => (
             <div key={item.name}>
               {item.dropdown ? (
                 <>
                   <button
                     onClick={() => toggleDropdown(item.name)}
-                    className="w-full flex justify-between px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-[#009688] hover:bg-blue-50"
+                    className='w-full flex justify-between px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-[#009688] hover:bg-blue-50'
                   >
-                    <span className="flex items-center">
+                    <span className='flex items-center'>
                       {item.icon}
                       {item.name}
                     </span>
@@ -784,13 +801,13 @@ const Navbar = () => {
                   </button>
 
                   {openDropdown === item.name && (
-                    <div className="pl-4">
+                    <div className='pl-4'>
                       {item.dropdown.map((subItem) => (
                         <Link
                           key={subItem.name}
                           to={subItem.href}
                           onClick={closeMenus}
-                          className="block px-3 py-2 rounded-md text-base text-[#009688] hover:bg-blue-50"
+                          className='block px-3 py-2 rounded-md text-base text-[#009688] hover:bg-blue-50'
                         >
                           {subItem.name}
                         </Link>
@@ -802,7 +819,7 @@ const Navbar = () => {
                 <Link
                   to={item.href}
                   onClick={closeMenus}
-                  className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-[#009688] hover:bg-blue-50"
+                  className='flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-[#009688] hover:bg-blue-50'
                 >
                   {item.icon}
                   {item.name}
@@ -812,8 +829,8 @@ const Navbar = () => {
           ))}
 
           {/* Upload CV */}
-          <button className="w-full flex items-center px-3 py-2 rounded-md text-base text-gray-700 hover:text-[#009688] hover:bg-blue-50">
-            <FaUpload className="mr-2" /> Upload CV
+          <button className='w-full flex items-center px-3 py-2 rounded-md text-base text-gray-700 hover:text-[#009688] hover:bg-blue-50'>
+            <FaUpload className='mr-2' /> Upload CV
           </button>
 
           {/* Login / Logout */}
@@ -823,17 +840,17 @@ const Navbar = () => {
                 handleLogout();
                 closeMenus();
               }}
-              className="w-full flex items-center px-3 py-2 rounded-md text-base font-medium text-white bg-red-600 hover:bg-red-700"
+              className='w-full flex items-center px-3 py-2 rounded-md text-base font-medium text-white bg-red-600 hover:bg-red-700'
             >
-              <FaSignOutAlt className="mr-2" /> Logout
+              <FaSignOutAlt className='mr-2' /> Logout
             </button>
           ) : (
             <Link
-              to="/login"
+              to='/login'
               onClick={closeMenus}
-              className="w-full flex items-center px-3 py-2 rounded-md text-base font-medium text-white bg-[#009688] hover:bg-[#00796b]"
+              className='w-full flex items-center px-3 py-2 rounded-md text-base font-medium text-white bg-[#009688] hover:bg-[#00796b]'
             >
-              <FaUser className="mr-2" /> Login
+              <FaUser className='mr-2' /> Login
             </Link>
           )}
         </div>

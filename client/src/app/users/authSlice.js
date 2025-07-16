@@ -1,62 +1,59 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../config/axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "../../config/axios";
 
-const API_URL = '/user';
+const API_URL = "/user";
 
 // REGISTER
 export const registerUser = createAsyncThunk(
-  'auth/registerUser',
+  "auth/registerUser",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`${API_URL}/register`, formData);
+      const response = await axios.post(`${API_URL}/registeruser`, formData);
       return response.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data.message || 'Registration failed');
+      return thunkAPI.rejectWithValue(
+        err.response.data.message || "Registration failed"
+      );
     }
   }
 );
 
 // LOGIN (optional, future use)
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
+  "auth/loginUser",
   async (formData, thunkAPI) => {
     try {
       const response = await axios.post(`${API_URL}/login`, formData);
       return response.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data.message || 'Login failed');
+      return thunkAPI.rejectWithValue(
+        err.response.data.message || "Login failed"
+      );
     }
   }
 );
 
 export const resetPassword = createAsyncThunk(
-  'auth/resetPassword',
+  "auth/resetPassword",
   async ({ id, email }, { rejectWithValue }) => {
-
     try {
-      const response = await axios.post(`${API_URL}/resetPassword/${id}`,
-        { password }
-      );
+      const response = await axios.post(`${API_URL}/resetPassword/${id}`, {
+        password,
+      });
       return response.data;
-
-
-
     } catch (error) {
       return rejectWithValue(
         err.response?.data?.message || "something went wrong"
       );
-
     }
-
   }
-)
-
+);
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: {
     user: null,
-    token: localStorage.getItem('token') || null,
+    token: localStorage.getItem("token") || null,
     loading: false,
     error: null,
   },
@@ -64,7 +61,7 @@ const authSlice = createSlice({
     logout(state) {
       state.user = null;
       state.token = null;
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {
@@ -78,7 +75,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        localStorage.setItem('token', action.payload.token);
+        localStorage.setItem("token", action.payload.token);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
@@ -92,9 +89,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        localStorage.setItem('token', action.payload.token);
+        state.user = action.payload;
+        state.token = action.payload;
+        localStorage.setItem("token", action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload;
@@ -115,8 +112,6 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
-
-
   },
 });
 

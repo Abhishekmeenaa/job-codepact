@@ -9,7 +9,7 @@ router.post("/register", AdminModel.register);
 
 router.post("/login", AdminModel.login);
 
-router.post('/registeruser',AdminModel.registeruser)
-router.post("/loginOrRegister", AdminModel.loginOrRegister)
+router.post("/registeruser", AdminModel.registeruser);
+router.post("/loginOrRegister", AdminModel.loginOrRegister);
 router.get("/all", AdminModel.getAllUsers);
 module.exports = router;
