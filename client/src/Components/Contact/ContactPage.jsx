@@ -120,7 +120,7 @@
 
 import React, { useState } from "react";
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
-import axios from "axios";
+import axios from "../../config/axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -139,7 +139,7 @@ const ContactPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8000/contacts", formData);
+      await axios.post("/contacts", formData);
       toast.success("Message sent successfully!", {
         position: "top-right",
       });
